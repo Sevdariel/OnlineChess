@@ -26,6 +26,12 @@ void ChessPiece::SetId(detail::IChessPieceEnums::id id)
 	m_id = id;
 }
 
+void ChessPiece::ChangeArrayPosition(int x, int y)
+{
+	xArrayPosition += x;
+	yArrayPosition += y;
+}
+
 void ChessPiece::SetPosition(sf::Vector2f position)
 {
 	m_sprite.setPosition(position);

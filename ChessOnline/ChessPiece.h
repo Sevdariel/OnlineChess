@@ -19,6 +19,7 @@ public:
 	float GetPositionY();
 	detail::IChessPieceEnums::id GetId();
 	void SetId(detail::IChessPieceEnums::id id);
+	void ChangeArrayPosition(int x, int y);
 
 protected:
 

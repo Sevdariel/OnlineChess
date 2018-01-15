@@ -31,8 +31,6 @@ void Pawn::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape> 
 {
 	for (int i = 0; i < square.size(); i++)
 	{
-		if (m_type == detail::IChessPieceEnums::WHITE)
-		{
 			if (square[i].getPosition().x == m_sprite.getPosition().x &&
 				square[i].getPosition().y == m_sprite.getPosition().y)
 			{
@@ -41,7 +39,7 @@ void Pawn::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape> 
 			}
 			if (arr[xArrayPosition + m_direction][yArrayPosition] == 0 &&
 				square[i].getPosition().x == yArrayPosition * 70 &&
-				square[i].getPosition().y == (xArrayPosition +m_direction) * 70)
+				square[i].getPosition().y == (xArrayPosition + m_direction) * 70)
 			{
 				square[i].setOutlineThickness(-6);
 				square[i].setOutlineColor(sf::Color::Yellow);
@@ -54,8 +52,8 @@ void Pawn::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape> 
 				square[i].setOutlineThickness(-6);
 				square[i].setOutlineColor(sf::Color::Yellow);
 			}
-		}
 	}
+	
 }
 //pawn draw method
 void Pawn::draw(sf::RenderWindow *win)const
@@ -69,3 +67,5 @@ void Pawn::ChangePosition(sf::Vector2f nextPosition)
 		moved = true;
 	m_sprite.setPosition(nextPosition);
 }
+
+
