@@ -46,23 +46,25 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 	{
 		if (event.type == sf::Event::MouseButtonReleased &&
 			event.mouseButton.button == sf::Mouse::Left)
+		{
 			//checking if moues button pressed contains piece
 			for (auto pieces : whitePieces)
+			{
 				if (mouse.x >= pieces->GetPositionX() &&
 					mouse.x < pieces->GetPositionX() + 70 &&
 					mouse.y >= pieces->GetPositionY() &&
 					mouse.y < pieces->GetPositionY() + 70)
-				{
-					//picking chess piece
+				{	//picking chess piece
 					if (!picked)
 					{
 						CalculateArrayPosition(mouse);
 						tempPiece = chessBoard.chessPiecePos[arrayPosY][arrayPosX];
 						selectedPiece = pieces;
+						selectedPiece->HighlightPossibleMove(chessBoard.chessPiecePos, chessBoard.square);
 						break;
 					}
 				}
-		//putting chess picked chess piece
+				//putting chess picked chess piece
 				else if (event.type == sf::Event::MouseButtonReleased &&
 					event.mouseButton.button == sf::Mouse::Left &&
 					selectedPiece != 0)
@@ -70,17 +72,25 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 					prevArrayPosX = arrayPosX;
 					prevArrayPosY = arrayPosY;
 					CalculateArrayPosition(mouse);
-					if (chessBoard.chessPiecePos[arrayPosY][arrayPosX] == 0)
+					if (chessBoard.chessPiecePos[arrayPosY][arrayPosX] == 0) //&&
 					{
-						selectedPiece->ChangePosition(CalculateProperPosition(mouse));
-						selectedPiece = 0;
-						picked = true;
-						chessBoard.chessPiecePos[arrayPosY][arrayPosX] = tempPiece;
-						chessBoard.chessPiecePos[prevArrayPosY][prevArrayPosX] = 0;
-						networkConnection->SendMessageToServer('e');
-						networkConnection->ReceiveMessageFromServer();
+						if (CheckHighlightPossibleMoves(mouse))
+						{
+							selectedPiece->ChangePosition(CalculateProperPosition(mouse));
+							selectedPiece = 0;
+							picked = true;
+							for (int i = 0; i < chessBoard.square.size(); i++)
+								chessBoard.square[i].setOutlineThickness(0);
+							chessBoard.chessPiecePos[arrayPosY][arrayPosX] = tempPiece;
+							chessBoard.chessPiecePos[prevArrayPosY][prevArrayPosX] = 0;
+							networkConnection->SendMessageToServer('e');
+							networkConnection->ReceiveMessageFromServer();
+							//networkConnection->SendChessPiecePosToServer(chessBoard.chessPiecePos);
+						}
 					}
 				}
+			}
+		}
 	}
 	//same as above but for player 2
 	else if (networkConnection->GetBufSign() == 'b')
@@ -98,6 +108,7 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 						CalculateArrayPosition(mouse);
 						tempPiece = chessBoard.chessPiecePos[arrayPosY][arrayPosX];
 						selectedPiece = pieces;
+						selectedPiece->HighlightPossibleMove(chessBoard.chessPiecePos, chessBoard.square);
 						break;
 					}
 				}
@@ -113,11 +124,11 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 						selectedPiece->ChangePosition(CalculateProperPosition(mouse));
 						selectedPiece = 0;
 						picked = true;
-						playerTurn = 1;
 						chessBoard.chessPiecePos[arrayPosY][arrayPosX] = tempPiece;
 						chessBoard.chessPiecePos[prevArrayPosY][prevArrayPosX] = 0;
 						networkConnection->SendMessageToServer('e');
 						networkConnection->ReceiveMessageFromServer();
+						//networkConnection->SendChessPiecePosToServer(chessBoard.chessPiecePos);
 					}
 				}
 	}
@@ -189,4 +200,20 @@ void Chess::CalculateArrayPosition(sf::Vector2f mouse)
 {
 	arrayPosX = mouse.x / 70;
 	arrayPosY = mouse.y / 70;
+}
+
+bool Chess::CheckHighlightPossibleMoves(sf::Vector2f mouse)
+{
+	std::cout << "in check func" << std::endl;
+	sf::Vector2f possiblePosition = CalculateProperPosition(mouse);
+	for (int i = 0; i < chessBoard.square.size(); i++)
+	{
+		if (possiblePosition == chessBoard.square[i].getPosition() && 
+			chessBoard.square[i].getOutlineThickness() == -6)
+		{
+			std::cout << "true" << std::endl;
+			return true;
+		}
+	}
+	return false;
 }

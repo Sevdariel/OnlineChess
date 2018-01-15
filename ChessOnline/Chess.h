@@ -35,5 +35,6 @@ private:
 	void CreatePieces();
 	sf::Vector2f CalculateProperPosition(sf::Vector2f mouse);
 	void CalculateArrayPosition(sf::Vector2f mouse);
+	bool CheckHighlightPossibleMoves(sf::Vector2f mouse);
 };
 

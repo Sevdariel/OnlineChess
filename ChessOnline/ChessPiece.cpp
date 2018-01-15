@@ -44,3 +44,7 @@ float ChessPiece::GetPositionY()
 void ChessPiece::ChangePosition(sf::Vector2f nextPosition)
 {
 }
+
+void ChessPiece::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape> &square)
+{
+}

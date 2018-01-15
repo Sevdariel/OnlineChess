@@ -53,8 +53,16 @@ void NetworkConnection::ReceiveMessageFromServer()
 }
 //Sending chess piece position array to server
 void NetworkConnection::SendChessPiecePosToServer(int array[8][8])
-{
-
+{	
+	//std::cout << "checkfirst" << std::endl;
+	ConvertIntArrayToChar(array);
+	//std::cout << "checksecond" << std::endl;
+	for (int i = 0; i < 8; i++)
+	{
+		//std::cout << "check" << i << std::endl;
+		send(SSocket, charArray[i], 8, 0);
+	}
+	//send(SSocket, *charArray, sizeof(array[8][8]), 0);
 }
 //closing socket
 void NetworkConnection::CloseSocket()
@@ -66,6 +74,40 @@ void NetworkConnection::CloseSocket()
 char NetworkConnection::GetBufSign()
 {
 	return bufSign;
+}
+void NetworkConnection::ConvertIntArrayToChar(int arr[8][8])
+{
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+		{
+			if (arr[i][j] == 0)
+				charArray[i][j] = '0';
+			else if (arr[i][j] == 1)
+				charArray[i][j] = '1';
+			else if (arr[i][j] == 2)
+				charArray[i][j] = '2';
+			else if (arr[i][j] == 3)
+				charArray[i][j] = '3';
+			else if (arr[i][j] == 4)
+				charArray[i][j] = '4';
+			else if (arr[i][j] == 5)
+				charArray[i][j] = '5';
+			else if (arr[i][j] == 6)
+				charArray[i][j] = '6';
+			else if (arr[i][j] == 11)
+				charArray[i][j] = 'z';
+			else if (arr[i][j] == 12)
+				charArray[i][j] = 'y';
+			else if (arr[i][j] == 13)
+				charArray[i][j] = 'w';
+			else if (arr[i][j] == 14)
+				charArray[i][j] = 'x';
+			else if (arr[i][j] == 15)
+				charArray[i][j] = 't';
+			else if (arr[i][j] == 16)
+				charArray[i][j] = 'v';
+		}
+	std::cout << &charArray[0] << std::endl;
 }
 //storing buf sign
 void NetworkConnection::StoreFirstSign(char buf[50])
