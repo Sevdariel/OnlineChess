@@ -19,7 +19,7 @@ private:
 	sf::RenderWindow *window;
 	bool exit;
 	bool picked;
-	int playerTurn = 1;
+	int playerTurn;
 	int arrayPosX, arrayPosY, prevArrayPosX, prevArrayPosY;
 	int tempPiece;
 	Board chessBoard;

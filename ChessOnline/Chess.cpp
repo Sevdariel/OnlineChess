@@ -44,6 +44,7 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 	//player 1 move
 	if (networkConnection->GetBufSign() == 'a')
 	{
+		playerTurn = 1;
 		if (event.type == sf::Event::MouseButtonReleased &&
 			event.mouseButton.button == sf::Mouse::Left)
 		{
@@ -77,7 +78,6 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 						if (CheckHighlightPossibleMoves(mouse))
 						{
 							selectedPiece->ChangePosition(CalculateProperPosition(mouse));
-							
 							picked = true;
 							for (int i = 0; i < chessBoard.square.size(); i++)
 								chessBoard.square[i].setOutlineThickness(0);
@@ -97,6 +97,7 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 	//same as above but for player 2
 	else if (networkConnection->GetBufSign() == 'b')
 	{
+		playerTurn = 2;
 		if (event.type == sf::Event::MouseButtonReleased &&
 			event.mouseButton.button == sf::Mouse::Left)
 			for (auto pieces : blackPieces)
@@ -121,16 +122,22 @@ void Chess::MouseEvent(sf::Vector2f mouse)
 					prevArrayPosX = arrayPosX;
 					prevArrayPosY = arrayPosY;
 					CalculateArrayPosition(mouse);
-					if (chessBoard.chessPiecePos[arrayPosY][arrayPosX] == 0)
+					if (chessBoard.chessPiecePos[arrayPosY][arrayPosX] == 0) //&&
 					{
-						selectedPiece->ChangePosition(CalculateProperPosition(mouse));
-						selectedPiece = 0;
-						picked = true;
-						chessBoard.chessPiecePos[arrayPosY][arrayPosX] = tempPiece;
-						chessBoard.chessPiecePos[prevArrayPosY][prevArrayPosX] = 0;
-						networkConnection->SendMessageToServer('e');
-						networkConnection->ReceiveMessageFromServer();
-						//networkConnection->SendChessPiecePosToServer(chessBoard.chessPiecePos);
+						if (CheckHighlightPossibleMoves(mouse))
+						{
+							selectedPiece->ChangePosition(CalculateProperPosition(mouse));
+							picked = true;
+							for (int i = 0; i < chessBoard.square.size(); i++)
+								chessBoard.square[i].setOutlineThickness(0);
+							chessBoard.chessPiecePos[arrayPosY][arrayPosX] = tempPiece;
+							chessBoard.chessPiecePos[prevArrayPosY][prevArrayPosX] = 0;
+							selectedPiece->ChangeArrayPosition(arrayPosY - prevArrayPosY, arrayPosX - prevArrayPosX);
+							networkConnection->SendMessageToServer('e');
+							networkConnection->ReceiveMessageFromServer();
+							//networkConnection->SendChessPiecePosToServer(chessBoard.chessPiecePos);
+							selectedPiece = 0;
+						}
 					}
 				}
 	}

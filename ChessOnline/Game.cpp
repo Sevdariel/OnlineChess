@@ -1,9 +1,10 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game(char argv[])
 {
 	window.create(sf::VideoMode(width, height), "OnlineChess");
 
+	networkConnection.SetIpAddress(argv);
 	gameState = END;
 
 	if (!font.loadFromFile("Data/Fonts/arial.ttf"))
@@ -19,7 +20,7 @@ Game::Game()
 Game::~Game()
 {
 }
-
+//menu main loop
 void Game::RunGame()
 {
 	while (gameState != END)
@@ -30,6 +31,8 @@ void Game::RunGame()
 			Menu();
 			break;
 		case GAME_CREATE:
+			//creating new room at server
+			//receiving result as char // c - room created
 			networkConnection.SendMessageToServer('c');
 			networkConnection.ReceiveMessageFromServer();
 			if (networkConnection.GetBufSign() == 'c')
@@ -40,6 +43,8 @@ void Game::RunGame()
 			gameState = MENU;
 			break;
 		case GAME_JOIN:
+			//joining to existing room at the server
+			//receiving result as char // j - joined room 
 			networkConnection.SendMessageToServer('j');
 			networkConnection.ReceiveMessageFromServer();
 			if (networkConnection.GetBufSign() == 'j')
@@ -55,7 +60,7 @@ void Game::RunGame()
 		}
 	}
 }
-
+// menu strings
 void Game::Menu()
 {
 	Text title("Chess Online", font, 80);
@@ -97,7 +102,7 @@ void Game::Menu()
 			window.display();
 	}
 }
-
+//menu mouse event
 void Game::MenuEvent(sf::Vector2f mouse, sf::Text text[])
 {
 	sf::Event event;
@@ -120,7 +125,7 @@ void Game::MenuEvent(sf::Vector2f mouse, sf::Text text[])
 			gameState = END;
 	}
 }
-
+//launching game loop
 void Game::PlayGame()
 {
 	Chess chess(window, networkConnection);

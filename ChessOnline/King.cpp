@@ -19,7 +19,7 @@ King::King(detail::IChessPieceEnums::id player, int i, int j)
 King::~King()
 {
 }
-
+//highlighting possible moves
 void King::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape>& square)
 {
 	for (int i = 0; i < square.size(); i++)
@@ -88,12 +88,12 @@ void King::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape>&
 		}
 	}
 }
-
+//drawing sprite
 void King::draw(sf::RenderWindow *win)const
 {
 	win->draw(m_sprite);
 }
-
+//changing position
 void King::ChangePosition(sf::Vector2f nextPosition)
 {
 	m_sprite.setPosition(nextPosition);

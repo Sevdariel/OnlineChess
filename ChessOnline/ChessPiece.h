@@ -1,9 +1,7 @@
 #pragma once
 #include "detail.h"
 #include "Board.h"
-
-class Board;
-
+//abstract class holding chess pieces
 class ChessPiece : public detail::IChessPieceEnums
 {
 public:
@@ -19,6 +17,7 @@ public:
 	float GetPositionY();
 	detail::IChessPieceEnums::id GetId();
 	void SetId(detail::IChessPieceEnums::id id);
+	//changing chess piece array position
 	void ChangeArrayPosition(int x, int y);
 
 protected:

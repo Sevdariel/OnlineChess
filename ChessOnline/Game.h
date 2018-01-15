@@ -13,11 +13,12 @@ class Game
 
 
 public:
-	Game();
+	Game(char argv[]);
 	~Game();
 
 	void RunGame();
 
+	//creating network connection
 	NetworkConnection networkConnection;
 protected:
 	enum GameState { MENU, GAME_CREATE, GAME_JOIN, GAME_OVER, END };
@@ -32,6 +33,6 @@ private:
 	void Menu();
 	void MenuEvent(sf::Vector2f mouse, sf::Text text[]);
 	void PlayGame();
-	//char ipAddress[] = "127.0.0.1";
+	char* ipAddress;
 };
 

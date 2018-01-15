@@ -11,7 +11,7 @@ NetworkConnection::NetworkConnection()
 		exit(1);
 	}
 
-	lpstServerEnt = gethostbyname("127.0.0.1");
+	lpstServerEnt = gethostbyname(ipAddress);
 	if (!lpstServerEnt)
 	{
 		std::cout << "Cant get server ip address\n";
@@ -54,15 +54,11 @@ void NetworkConnection::ReceiveMessageFromServer()
 //Sending chess piece position array to server
 void NetworkConnection::SendChessPiecePosToServer(int array[8][8])
 {	
-	//std::cout << "checkfirst" << std::endl;
 	ConvertIntArrayToChar(array);
-	//std::cout << "checksecond" << std::endl;
 	for (int i = 0; i < 8; i++)
 	{
-		//std::cout << "check" << i << std::endl;
 		send(SSocket, charArray[i], 8, 0);
 	}
-	//send(SSocket, *charArray, sizeof(array[8][8]), 0);
 }
 //closing socket
 void NetworkConnection::CloseSocket()
@@ -75,6 +71,7 @@ char NetworkConnection::GetBufSign()
 {
 	return bufSign;
 }
+//converting int array to char array
 void NetworkConnection::ConvertIntArrayToChar(int arr[8][8])
 {
 	for (int i = 0; i < 8; i++)
@@ -108,6 +105,11 @@ void NetworkConnection::ConvertIntArrayToChar(int arr[8][8])
 				charArray[i][j] = 'v';
 		}
 	std::cout << &charArray[0] << std::endl;
+}
+//setting server ip address
+void NetworkConnection::SetIpAddress(char * ip)
+{
+	ipAddress = ip;
 }
 //storing buf sign
 void NetworkConnection::StoreFirstSign(char buf[50])

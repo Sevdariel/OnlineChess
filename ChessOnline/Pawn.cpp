@@ -27,6 +27,7 @@ Pawn::Pawn(detail::IChessPieceEnums::id player, int i, int j)
 Pawn::~Pawn()
 {
 }
+//highlighting possible moves
 void Pawn::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape> &square)
 {
 	for (int i = 0; i < square.size(); i++)

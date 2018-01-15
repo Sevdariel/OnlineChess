@@ -19,7 +19,7 @@ Knight::Knight(detail::IChessPieceEnums::id player, int i, int j)
 Knight::~Knight()
 {
 }
-
+//highlighting possible moves
 void Knight::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape>& square)
 {
 	for (int i = 0; i < square.size(); i++)
@@ -87,12 +87,12 @@ void Knight::HighlightPossibleMove(int arr[8][8], std::vector<sf::RectangleShape
 		}
 	}
 }
-
+//drawing sprite
 void Knight::draw(sf::RenderWindow *win)const
 {
 	win->draw(m_sprite);
 }
-
+//changing position
 void Knight::ChangePosition(sf::Vector2f nextPosition)
 {
 	m_sprite.setPosition(nextPosition);

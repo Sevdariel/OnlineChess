@@ -23,6 +23,7 @@ public:
 	char GetBufSign();
 	char charArray[8][8];
 	void ConvertIntArrayToChar(int arr[8][8]);
+	void SetIpAddress(char *ip);
 private:
 	WORD WRequiredVersion;
 	WSADATA WData;
@@ -36,7 +37,7 @@ private:
 	char bufSign;
 	//char charArray[8][8];
 
-	
+	char* ipAddress;
 	void StoreFirstSign(char buf[50]);
 };
 
